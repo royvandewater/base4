@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+var b4encode = require('../index.js').b4encode;
+console.log(b4encode(process.argv[process.argv.length - 1]));
