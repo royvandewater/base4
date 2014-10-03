@@ -1,21 +1,36 @@
 'use strict';
 
-var b4decode, b4encode;
+var b4decode, b4encode, lpad;
 
 b4decode = function(base4data){
-  var hexdata = parseInt(base4data, 4).toString(16);
+  var data, fragment, hexData, hexFragment;
 
-  var data = '';
-  for(var i=0; i < hexdata.length; i += 2) {
-    var fragment = hexdata[i] + hexdata[i+1];
-    data += String.fromCharCode(parseInt(fragment, 16));
+  data = '';
+  for (var i=0; i < base4data.length; i += 4){
+    fragment    = base4data.slice(i, i+4).toString();
+    hexData     = lpad(parseInt(fragment, 4).toString(16), 2);
+    hexFragment = hexData[0] + hexData[1];
+    data += String.fromCharCode(parseInt(hexFragment, 16));
   }
   return data;
 };
 
 b4encode = function(data){
-  var hexdata = new Buffer(data).toString('hex');
-  return parseInt(hexdata, 16).toString(4);
+  var hexdata, fragment;
+  hexdata = new Buffer(data).toString('hex');
+
+  return hexdata.split('').map(function(character){
+    fragment = parseInt(character, 16).toString(4);
+    return lpad(fragment, 2);
+  }).join('');
+};
+
+lpad = function(string, length){
+  if(string.length >= length){
+    return string;
+  }
+
+  return lpad('0' + string, length);
 };
 
 module.exports = {
