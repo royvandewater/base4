@@ -15,7 +15,6 @@ b4decode = function(base4data){
 
 b4encode = function(data){
   var hexdata = new Buffer(data).toString('hex');
-  console.log(hexdata);
   return parseInt(hexdata, 16).toString(4);
 };
 

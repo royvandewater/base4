@@ -1,4 +1,12 @@
 #!/usr/bin/env node
+'use strict';
 
 var b4encode = require('../index.js').b4encode;
-console.log(b4encode(process.argv[process.argv.length - 1]));
+
+process.stdin.on('data', function(data){
+  process.stdout.write(b4encode(data));
+});
+
+process.stdin.on('end', function(){
+  process.stdout.write('\n');
+});
